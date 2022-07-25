@@ -14,10 +14,11 @@ const SnakeArea = () => {
     [4, 4],
     [5, 4],
     [6, 4],
+
   ]);
   const [moveDirection, setMoveDirection] = useState([1, 0]);
   const [paused, setPaused] = useState(false);
-  const [food, setFood] = useState([5, 1]);
+  const [food, setFood] = useState([0, 0]);
   const [modalVisible, setModalVisible] = useState(false);
   const [speed, setSpeed] = useState(400);
   const [crashed, setCrashed] = useState(false);
@@ -32,7 +33,7 @@ const SnakeArea = () => {
   }, [snakeCoordinates, paused]);
   //(snakeCoordinates);
   console.log(food);
-  const gameAreaSize = {x: 10, y: 11};
+  const gameAreaSize = {x: 40, y: 50};
   const margin = 1;
   const snakeDotSize =
     (width - 4 - gameAreaSize.x * 2 * margin) / gameAreaSize.x;
@@ -48,16 +49,14 @@ const SnakeArea = () => {
   const randomFood = () => {
     let x = Math.floor(Math.random() * (gameAreaSize.y - 1));
     let y = Math.floor(Math.random() * (gameAreaSize.x - 1));
-    setFood([x, y]);
-    for (let i = 0; i < snakeCoordinates.length - 1; i++) {
-      if (
-        snakeCoordinates[i][0] === food[0] &&
-        snakeCoordinates[i][1] === food[1]
-      ) {
-        randomFood();
-      } else {
-        console.log('ONUDA KIYASLAMAYAK');
-      }
+    if (
+      snakeCoordinates.some(
+        coordinate => JSON.stringify(coordinate) === JSON.stringify([x, y]),
+      )
+    ) {
+      randomFood();
+    } else {
+      setFood([x, y]);
     }
   };
   const snakeGhoustMode = () => {
@@ -79,38 +78,8 @@ const SnakeArea = () => {
   function moveSnake() {
     let tempSnake = snakeCoordinates;
     if (
-      snakeCoordinates[snakeCoordinates.length - 1][0] + moveDirection[0] ===
-        food[0] &&
-      snakeCoordinates[snakeCoordinates.length - 1][1] + moveDirection[1] ===
-        food[1]
-    ) {
-      tempSnake.push([
-        snakeCoordinates[snakeCoordinates.length - 1][0] + moveDirection[0] ===
-        gameAreaSize.y
-          ? 0
-          : snakeCoordinates[snakeCoordinates.length - 1][0] +
-              moveDirection[0] ===
-            -1
-          ? gameAreaSize.y - 1
-          : snakeCoordinates[snakeCoordinates.length - 1][0] + moveDirection[0],
-        snakeCoordinates[snakeCoordinates.length - 1][1] + moveDirection[1] ===
-        gameAreaSize.x
-          ? 0
-          : snakeCoordinates[snakeCoordinates.length - 1][1] +
-              moveDirection[1] ===
-            -1
-          ? gameAreaSize.x - 1
-          : snakeCoordinates[snakeCoordinates.length - 1][1] + moveDirection[1],
-      ]);
-      setSpeed(speed - speed / 10);
-      randomFood();
-    } else if (
-      (snakeCoordinates[snakeCoordinates.length - 1][0] + moveDirection[0] ===
-        gameAreaSize.y &&
-        food[0] === 0) ||
-      (snakeCoordinates[snakeCoordinates.length - 1][1] + moveDirection[1] ===
-        gameAreaSize.x &&
-        food[1] === 0)
+      snakeCoordinates[snakeCoordinates.length - 1][0] === food[0] &&
+      snakeCoordinates[snakeCoordinates.length - 1][1] === food[1]
     ) {
       tempSnake.push([
         snakeCoordinates[snakeCoordinates.length - 1][0] + moveDirection[0] ===
@@ -167,7 +136,7 @@ const SnakeArea = () => {
             position: 'absolute',
             top: (item[0] * width) / gameAreaSize.x,
             left: (item[1] * width) / gameAreaSize.x,
-            zIndex: 2,
+            zIndex: 99,
           },
         ]}
       />
@@ -275,7 +244,7 @@ const SnakeArea = () => {
               position: 'absolute',
               top: (food[0] * width) / gameAreaSize.x,
               left: (food[1] * width) / gameAreaSize.x,
-              zIndex: 1,
+              zIndex: -1,
             },
           ]}
         />
