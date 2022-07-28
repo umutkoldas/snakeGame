@@ -14,13 +14,24 @@ const SnakeArea = () => {
     [4, 4],
     [5, 4],
     [6, 4],
-
+    [7, 4],
+    [8, 4],
+    [9, 4],
+    [10, 4],
+    [11, 4],
+    [12, 4],
+    [13, 4],
+    [14, 4],
+    [15, 4],
+    [16, 4],
+    [17, 4],
+    [18, 4],
   ]);
   const [moveDirection, setMoveDirection] = useState([1, 0]);
   const [paused, setPaused] = useState(false);
-  const [food, setFood] = useState([0, 0]);
+  const [food, setFood] = useState([5, 9]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [speed, setSpeed] = useState(400);
+  const [speed, setSpeed] = useState(100);
   const [crashed, setCrashed] = useState(false);
   useEffect(() => {
     if (!paused) {
@@ -32,11 +43,11 @@ const SnakeArea = () => {
     }
   }, [snakeCoordinates, paused]);
   //(snakeCoordinates);
-  console.log(food);
   const gameAreaSize = {x: 40, y: 50};
   const margin = 1;
   const snakeDotSize =
     (width - 4 - gameAreaSize.x * 2 * margin) / gameAreaSize.x;
+  //console.log(snakeDotSize * gameAreaSize.x + gameAreaSize.x * 2 * margin);
   const snakeDotStyles = {
     width: snakeDotSize,
     height: snakeDotSize,
@@ -183,6 +194,7 @@ const SnakeArea = () => {
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: -3,
   };
 
   const gameOver = () => {
@@ -204,12 +216,6 @@ const SnakeArea = () => {
       [4, 4],
       [5, 4],
       [6, 4],
-      [7, 4],
-      [8, 4],
-      [9, 4],
-      [10, 4],
-      [11, 4],
-      [12, 4],
     ]);
     setModalVisible(false);
     setPaused(false);

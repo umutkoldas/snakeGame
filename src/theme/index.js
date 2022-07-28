@@ -4,7 +4,6 @@ const COLORS = {
   arrow: '#395B64',
   snake: '#DFF6FF',
   food: '#47B5FF',
-  black:"black"
 };
 
 export default COLORS;
