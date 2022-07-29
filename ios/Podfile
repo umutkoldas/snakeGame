@@ -1,8 +1,11 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+$RNFirebaseAsStaticFramework = true
 
 platform :ios, '11.0'
 install! 'cocoapods', :deterministic_uuids => false
+
+use_frameworks!
 
 target 'snakeGame' do
   config = use_native_modules!
@@ -28,7 +31,7 @@ target 'snakeGame' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!()
+  # use_flipper!()
 
   post_install do |installer|
     react_native_post_install(installer)
