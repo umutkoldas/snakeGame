@@ -30,6 +30,7 @@ const ModalGameOver = ({
       animationType={animationType}>
       <View style={styles.transparentModalView}>
         <View style={styles.gameOverModal}>
+          <Text>{user.displayName}</Text>
           <Text style={styles.scoreText}>Score: {score}</Text>
           <View style={styles.twoButtonView}>
             <TouchableOpacity onPress={onPress}>

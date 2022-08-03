@@ -6,7 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import styles from './styles';
 import Icon from '../../icons/icon';
 import auth from '@react-native-firebase/auth';
@@ -37,6 +37,11 @@ const SignInScreen = () => {
       auth().onAuthStateChanged(onAuthStateChanged)
     );
   }
+  const [displayName, setDisplayName] = useState(null);
+
+  const loginWithForm = value => {
+    dispatch({type: 'SET_USER', payload: {displayName: displayName}});
+  };
 
   return (
     <SafeAreaView style={styles.main}>
@@ -44,12 +49,14 @@ const SignInScreen = () => {
         style={styles.imageBackground}
         source={require('../../icons/loginScreenBackground.gif')}>
         <TextInput
+          autoCorrect={false}
+          onChangeText={value => setDisplayName(value)}
           style={styles.textInput}
           placeholder="iki ayaklı yılan..."
           placeholderTextColor="white"
         />
         <View style={styles.loginTextView}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => loginWithForm()}>
             <Text style={styles.loginText}>GİRİS YAP</Text>
           </TouchableOpacity>
         </View>
