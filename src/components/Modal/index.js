@@ -1,6 +1,8 @@
 import {Text, Modal, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import styles from './styles';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch, useSelector} from 'react-redux';
 
 const ModalGameOver = ({
   visible,
@@ -10,6 +12,17 @@ const ModalGameOver = ({
   onPress,
   onPressRestart,
 }) => {
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
+  const signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      console.log('aslan');
+      dispatch({type: 'SET_USER', payload: null});
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <Modal
       visible={visible}
@@ -26,6 +39,7 @@ const ModalGameOver = ({
               <Text style={styles.buttonText}>Restart</Text>
             </TouchableOpacity>
           </View>
+          <Text onPress={signOut}>Çıkış</Text>
         </View>
       </View>
     </Modal>

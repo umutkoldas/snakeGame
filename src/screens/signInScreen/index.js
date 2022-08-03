@@ -6,11 +6,12 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles';
 import Icon from '../../icons/icon';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch, useSelector} from 'react-redux';
 
 GoogleSignin.configure({
   iosClientId:
@@ -18,7 +19,8 @@ GoogleSignin.configure({
 });
 
 const SignInScreen = () => {
-  const [user, setUser] = useState();
+  const dispatch = useDispatch();
+
   async function onGoogleButtonPress() {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
@@ -26,20 +28,15 @@ const SignInScreen = () => {
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
+    function onAuthStateChanged(user) {
+      dispatch({type: 'SET_USER', payload: user});
+    }
     // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    return (
+      auth().signInWithCredential(googleCredential),
+      auth().onAuthStateChanged(onAuthStateChanged)
+    );
   }
-
-  function onAuthStateChanged(user) {
-    setUser(user);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  console.log(user);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -58,7 +55,7 @@ const SignInScreen = () => {
         </View>
         <View style={styles.loginOptionsView}>
           <TouchableOpacity
-            onPress={onGoogleButtonPress}
+            onPress={() => onGoogleButtonPress()}
             style={styles.loginGmail}>
             <Icon iconName="Google" />
           </TouchableOpacity>

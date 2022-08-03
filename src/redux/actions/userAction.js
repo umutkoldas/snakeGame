@@ -1,6 +1,6 @@
-const setUser = payload => ({
+const setUser = user => ({
   type: 'SET_USER',
-  payload,
+  payload: user,
 });
 
 export {setUser};
